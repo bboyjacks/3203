@@ -6,9 +6,31 @@ void execQuadraticRoot()
   std::string a;
   std::string b;
   std::string c;
-  std::cout << "Enter a, b, c: " << std::endl;
+  std::cout << "Enter a, b, c: ";
   std::cin >> a >> b >> c;
-  std::cout << a << " " << b << " " << c << std::endl;
+
+  const double a_d = std::stof(a);
+  const double b_d = std::stof(b);
+  const double c_d = std::stof(c);
+
+  const double discriminant = b_d * b_d - 4 * a_d * c_d;
+  
+  if (discriminant < 0)
+    std::cout << "The equation has no real roots" << std::endl;
+  else if (discriminant > 0)
+  {
+    const double r1 = (-b_d + std::sqrt(discriminant)) / (2 * a_d);
+    const double r2 = (-b_d - std::sqrt(discriminant)) / (2 * a_d);
+
+    std::cout << "The equation has two roots: " << r1 << " and " << r2 << std::endl;
+  }
+  else
+  {
+    const double r = -b_d / (2 * a_d);
+
+    std::cout << "The equation has one root: " << r << std::endl;
+  }
+  std::cout << a_d << " " << b_d << " " << c_d << std::endl;
 }
 
 void execGradeCalculator()
