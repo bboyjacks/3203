@@ -1,16 +1,18 @@
 #pragma once
 namespace Functions
 {
-  bool isValid(int number);
+  bool isValid(long long number);
 
-  int sumOfDoubleEvenPlace(int number);
+  long long sumOfDoubleEvenPlace(long long number);
 
-  int getDigit(int number);
+  long long getDigit(long long number);
 
-  int sumOfOddPlace(int number);
+  long long sumOfOddPlace(long long number);
 
-  bool prefixMatched(int number, int digit);
+  bool prefixMatched(long long number, long long digit);
 
-  int getSize(int number);
+  long long getSize(long long number);
+
+  long long getPrefix(long long number, long long numDigits);
 };
 

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Functions.h"
 
 void execQuadraticRoot()
 {
@@ -83,7 +84,15 @@ void execGradeCalculator()
 
 void execCreditCardValidator()
 {
-  std::cout << "Credit card validator" << std::endl;
+  std::cout << "Enter a credit card number: " << std::endl;
+  long long input;
+  std::cin >> input;
+
+  std::cout << input << " is ";
+  if (Functions::isValid(input))
+    std::cout << "Credit card number is valid." << std::endl;
+  else
+    std::cout << "Credit card number is invalid." << std::endl;
 }
 
 int main()
