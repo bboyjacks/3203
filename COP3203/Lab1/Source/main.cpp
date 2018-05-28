@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cmath>
 #include "Functions.h"
 
 void execQuadraticRoot()
@@ -17,22 +18,22 @@ void execQuadraticRoot()
 
   const double discriminant = b_d * b_d - 4 * a_d * c_d;
   
+  std::cout << std::endl;
   if (discriminant < 0)
-    std::cout << "The equation has no real roots" << std::endl;
+    std::cout << "The equation has no real roots.";
   else if (discriminant > 0)
   {
     const double r1 = (-b_d + std::sqrt(discriminant)) / (2 * a_d);
     const double r2 = (-b_d - std::sqrt(discriminant)) / (2 * a_d);
 
-    std::cout << "The equation has two roots: " << r1 << " and " << r2 << std::endl;
+    std::cout << "The equation has two roots: " << r1 << " and " << r2;
   }
   else
   {
     const double r = -b_d / (2 * a_d);
 
-    std::cout << "The equation has one root: " << r << std::endl;
+    std::cout << "The equation has one root: " << r;
   }
-  std::cout << a_d << " " << b_d << " " << c_d << std::endl;
 }
 
 void execGradeCalculator()
@@ -46,7 +47,7 @@ void execGradeCalculator()
 
   int best_score = -1;
 
-  std::cout << "Enter " << input_int << " scores: ";
+  std::cout << std::endl;
   for (unsigned int i = 0; i < input_int; i++)
   {
     std::string grade_str;
@@ -90,49 +91,33 @@ void execCreditCardValidator()
 
   std::cout << input << " is ";
   if (Functions::isValid(input))
-    std::cout << "Credit card number is valid." << std::endl;
+    std::cout << "valid.";
   else
-    std::cout << "Credit card number is invalid." << std::endl;
+    std::cout << "invalid.";
 }
 
 int main()
 {
-  bool validLastInput{ true };
-  bool runChar{ true };
-  std::string input;
-  while (true)
+  int input;
+
+  std::cout << "1. Quadratic Root" << std::endl;
+  std::cout << "2. Grade Calculator" << std::endl;
+  std::cout << "3. Credit Card Validator" << std::endl;
+  std::cout << "Enter a number: " << std::endl;
+  std::cin >> input;
+  if (!std::cin.fail())
   {
-    if (validLastInput)
-    {
-      std::cout << "1. Quadratic Root" << std::endl;
-      std::cout << "2. Grade Calculator" << std::endl;
-      std::cout << "3. Credit Card Validator" << std::endl;
-      std::cout << "Enter a number: " << std::endl;
-    }
-    std::cin >> input;
-    if (!input.empty())
-    {
-      const int choice = std::stoi(input);
-      if (choice == 1)
-      {
-        validLastInput = true;
-        execQuadraticRoot();
-      }
-      else if (choice == 2)
-      {
-        validLastInput = true;
-        execGradeCalculator();
-      }
-      else if (choice == 3)
-      {
-        validLastInput = true;
-        execCreditCardValidator();
-      }
-      else
-      {
-        validLastInput = false;
-      }
-    }
+    if (input == 1)
+      execQuadraticRoot();
+    else if (input == 2)
+      execGradeCalculator();
+    else if (input == 3)
+      execCreditCardValidator();
+    else if (input < 1 || input > 3)
+      std::cout << "Input out of range!";
   }
+  else
+    std::cout << "Invalid input!";
+
   return 0;
 }

@@ -14,5 +14,5 @@ namespace Functions
   long long getSize(long long number);
 
   long long getPrefix(long long number, long long numDigits);
-};
+}
 
