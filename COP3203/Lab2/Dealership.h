@@ -18,7 +18,7 @@ public:
 private:
   std::string m_dealer_name;
   int m_num_showroom;
-  int m_showroom_index;
+  unsigned int m_showroom_index;
   const Showroom** m_showrooms;
 };
 

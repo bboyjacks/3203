@@ -7,7 +7,7 @@ Showroom::Showroom(std::string _showroom_name, const int _max_capacity) :
   m_max_capacity(_max_capacity),
   m_cur_num_vehicle(0)
 {
-  m_vehicles = new const Vehicle*[m_max_capacity];
+  m_vehicles = static_cast<const Vehicle**>(malloc(sizeof(Vehicle) * m_max_capacity));
 }
 
 Showroom::Showroom(Showroom&& _other_showroom) noexcept
@@ -61,5 +61,6 @@ const char* Showroom::GetName() const
 
 Showroom::~Showroom() 
 {
+  delete[] m_vehicles;
   std::cout << GetName() << " destructor called." << std::endl;
 }

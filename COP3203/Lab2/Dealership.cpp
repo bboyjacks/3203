@@ -8,7 +8,7 @@ Dealership::Dealership(std::string _dealer_name, const int _num_showroom):
   m_num_showroom(_num_showroom),
   m_showroom_index(0)
 {
-  m_showrooms = new const Showroom*[m_num_showroom];
+  m_showrooms = static_cast<const Showroom**>(malloc(sizeof(Showroom) * m_num_showroom));
 }
 
 Dealership::Dealership(const Dealership& _other)

@@ -52,12 +52,12 @@ Vehicle& Vehicle::operator=(Vehicle&& _other_vehicle) noexcept
 
 void Vehicle::Display() const
 {
-  std::cout << GetYearMakeModel() << TAB + "$" << static_cast<int>(GetPrice()) << TAB + std::to_string(m_miles) << std::endl;
+  std::cout << GetYearMakeModel() << " " + TAB + "$" << static_cast<int>(GetPrice()) << TAB + std::to_string(m_miles) << std::endl;
 }
 
 std::string Vehicle::GetYearMakeModel() const
 {
-  return std::to_string(m_year) + TAB + m_model;
+  return std::to_string(m_year) + " " + TAB + m_make + " " +  m_model;
 }
 
 float Vehicle::GetPrice() const
