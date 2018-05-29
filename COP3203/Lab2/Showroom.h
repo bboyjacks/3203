@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 #include "Vehicle.h"
 
 class Showroom
@@ -22,7 +23,7 @@ public:
   virtual ~Showroom();
 private:
   std::string m_showroom_name;
-  Vehicle** m_vehicles;
+  std::vector<const Vehicle*> m_vehicles;
   int m_max_capacity;
   int m_cur_num_vehicle;
 };

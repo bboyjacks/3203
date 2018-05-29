@@ -8,7 +8,6 @@ Showroom::Showroom(std::string _showroom_name, int _max_capacity) :
   m_max_capacity(_max_capacity),
   m_cur_num_vehicle(0)
 {
-  m_vehicles = new Vehicle*[m_max_capacity];
 }
 
 Showroom::Showroom(Showroom&& _other_showroom) noexcept
@@ -31,8 +30,7 @@ Showroom& Showroom::operator=(Showroom&& _other_showroom) noexcept
 
 void Showroom::AddVehicle(const Vehicle* _vehicle)
 {
-  if (m_vehicles != nullptr)
-    m_vehicles[m_cur_num_vehicle++] = _vehicle;
+  m_vehicles.push_back(_vehicle);
 }
 
 void Showroom::ShowInventory() const
@@ -42,18 +40,25 @@ void Showroom::ShowInventory() const
 
 const Vehicle* Showroom::GetVehicleList() const
 {
+  if (!m_vehicles.empty())
+    return m_vehicles[0];
+  else
+    return nullptr;
 }
 
-unsigned Showroom::GetCapacity() const
+unsigned int Showroom::GetCapacity() const
 {
+  return m_max_capacity;
 }
 
-unsigned Showroom::GetCount() const
+unsigned int Showroom::GetCount() const
 {
+  return m_vehicles.size();
 }
 
 const char* Showroom::GetName() const
 {
+  return m_showroom_name.c_str();
 }
 
 Showroom::~Showroom() = default;
