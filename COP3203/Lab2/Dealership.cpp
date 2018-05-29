@@ -8,7 +8,7 @@ Dealership::Dealership(std::string _dealer_name, const int _num_showroom):
   m_num_showroom(_num_showroom),
   m_showroom_index(0)
 {
-  m_showrooms = static_cast<const Showroom**>(malloc(sizeof(Showroom) * m_num_showroom));
+  m_showrooms = new Showroom[m_num_showroom];
 }
 
 Dealership::Dealership(const Dealership& _other)
@@ -40,32 +40,42 @@ Dealership& Dealership::operator=(Dealership&& _other) noexcept
 void Dealership::AddShowroom(const Showroom* _showroom)
 {
   if (_showroom != nullptr)
-    m_showrooms[m_showroom_index++] = _showroom;
+  {
+    if (m_showroom_index < m_num_showroom)
+    {
+      m_showrooms[m_showroom_index++] = *_showroom;
+    }
+  }
 }
 
 void Dealership::ShowInventory() const
 {
   std::cout << "Inventory of " << m_dealer_name << std::endl;
 
-  float total_car_price = 0;
-  float total_car_count = 0;
+  m_total_car_price = 0.0f;
+  m_total_car_count = 0.0f;
   for (unsigned int x = 0; x < m_showroom_index; x++)
   {
-    std::cout << "Vehicles in " << m_showrooms[x]->GetName() << std::endl;
-    const Vehicle* vehicles = m_showrooms[x]->GetVehicleList();
+    std::cout << "Vehicles in " << m_showrooms[x].GetName() << std::endl;
+    const Vehicle* vehicles = m_showrooms[x].GetVehicleList();
     if (vehicles != nullptr)
     {
-      for (unsigned int i = 0; i < m_showrooms[x]->GetCount() && i < m_showrooms[x]->GetCapacity(); i++)
+      for (unsigned int i = 0; i < m_showrooms[x].GetCount() && i < m_showrooms[x].GetCapacity(); i++)
       {
         vehicles[i].Display();
-        total_car_price += vehicles[i].GetPrice();
-        total_car_count++;
+        m_total_car_price += vehicles[i].GetPrice();
+        m_total_car_count++;
       }
       std::cout << std::endl;
     }
   }
 
-  std::cout << "Average car price: $" << std::setprecision(7) << total_car_price / total_car_count << std::endl;
+  std::cout << "Average car price: $" << std::setprecision(7) << GetAveragePrice() << std::endl;
+}
+
+float Dealership::GetAveragePrice() const
+{
+  return m_total_car_price / m_total_car_count;
 }
 
 Dealership::~Dealership()

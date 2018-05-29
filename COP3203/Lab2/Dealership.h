@@ -13,12 +13,15 @@ public:
 
   void AddShowroom(const Showroom* _showroom);
   void ShowInventory() const;
+  float GetAveragePrice() const;
 
   virtual ~Dealership();
 private:
   std::string m_dealer_name;
-  int m_num_showroom;
+  unsigned int m_num_showroom;
   unsigned int m_showroom_index;
-  const Showroom** m_showrooms;
+  Showroom* m_showrooms;
+  mutable float m_total_car_price;
+  mutable float m_total_car_count;
 };
 

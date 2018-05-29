@@ -6,10 +6,11 @@
 class Showroom
 {
 public:
+  Showroom();
   Showroom(std::string _showroom_name, int _max_capacity);
-  Showroom(const Showroom& _other_showroom) = default;
+  Showroom(const Showroom& _other_showroom);
   Showroom(Showroom&& _other_showroom) noexcept;
-  Showroom& operator=(const Showroom& _other_showroom) = default;
+  Showroom& operator=(const Showroom& _other_showroom);
   Showroom& operator=(Showroom&& _other_showroom) noexcept;
 
   void AddVehicle(const Vehicle* _vehicle);

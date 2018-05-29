@@ -38,7 +38,14 @@ Vehicle::Vehicle(Vehicle&& _other_vehicle) noexcept
 }
 
 Vehicle& Vehicle::operator=(const Vehicle& _other_vehicle)
-= default;
+{
+  m_make = _other_vehicle.m_make;
+  m_model = _other_vehicle.m_model;
+  m_price = _other_vehicle.m_price;
+  m_year = _other_vehicle.m_year;
+  m_miles = _other_vehicle.m_miles;
+  return *this;
+}
 
 Vehicle& Vehicle::operator=(Vehicle&& _other_vehicle) noexcept
 {

@@ -2,12 +2,28 @@
 #include <iostream>
 
 
+Showroom::Showroom() :
+  m_showroom_name(""),
+  m_vehicles(nullptr),
+  m_max_capacity(0),
+  m_cur_num_vehicle(0)
+{
+}
+
 Showroom::Showroom(std::string _showroom_name, const int _max_capacity) :
   m_showroom_name(std::move(_showroom_name)),
   m_max_capacity(_max_capacity),
   m_cur_num_vehicle(0)
 {
-  m_vehicles = static_cast<const Vehicle**>(malloc(sizeof(Vehicle) * m_max_capacity));
+  m_vehicles = static_cast<const Vehicle**>(malloc(sizeof(Vehicle*) * m_max_capacity));
+}
+
+Showroom::Showroom(const Showroom& _other_showroom)
+{
+  m_showroom_name = _other_showroom.m_showroom_name;
+  m_vehicles = _other_showroom.m_vehicles;
+  m_max_capacity = _other_showroom.m_max_capacity;
+  m_cur_num_vehicle = _other_showroom.m_cur_num_vehicle;
 }
 
 Showroom::Showroom(Showroom&& _other_showroom) noexcept
@@ -18,6 +34,14 @@ Showroom::Showroom(Showroom&& _other_showroom) noexcept
   m_cur_num_vehicle = _other_showroom.m_cur_num_vehicle;
 }
 
+Showroom& Showroom::operator=(const Showroom& _other_showroom)
+{
+  m_showroom_name = _other_showroom.m_showroom_name;
+  m_vehicles = _other_showroom.m_vehicles;
+  m_max_capacity = _other_showroom.m_max_capacity;
+  m_cur_num_vehicle = _other_showroom.m_cur_num_vehicle;
+  return *this;
+}
 
 Showroom& Showroom::operator=(Showroom&& _other_showroom) noexcept
 {
@@ -61,6 +85,7 @@ const char* Showroom::GetName() const
 
 Showroom::~Showroom() 
 {
-  delete[] m_vehicles;
+  for (unsigned int i = 0; i < m_cur_num_vehicle; i++)
+    m_vehicles[i]->~Vehicle();
   std::cout << GetName() << " destructor called." << std::endl;
 }
