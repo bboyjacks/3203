@@ -5,8 +5,10 @@
 
 Dealership::Dealership(std::string _dealer_name, const int _num_showroom):
   m_dealer_name(std::move(_dealer_name)),
-  m_num_showroom(_num_showroom)
+  m_num_showroom(_num_showroom),
+  m_showroom_index(0)
 {
+  m_showrooms = new const Showroom*[m_num_showroom];
 }
 
 Dealership::Dealership(const Dealership& _other)
@@ -37,7 +39,8 @@ Dealership& Dealership::operator=(Dealership&& _other) noexcept
 
 void Dealership::AddShowroom(const Showroom* _showroom)
 {
-  m_showrooms.push_back(_showroom);
+  if (_showroom != nullptr)
+    m_showrooms[m_showroom_index++] = _showroom;
 }
 
 void Dealership::ShowInventory() const
@@ -46,13 +49,13 @@ void Dealership::ShowInventory() const
 
   float total_car_price = 0;
   float total_car_count = 0;
-  for (auto showroom : m_showrooms)
+  for (unsigned int x = 0; x < m_showroom_index; x++)
   {
-    std::cout << "Vehicles in " << showroom->GetName() << std::endl;
-    const Vehicle* vehicles = showroom->GetVehicleList();
+    std::cout << "Vehicles in " << m_showrooms[x]->GetName() << std::endl;
+    const Vehicle* vehicles = m_showrooms[x]->GetVehicleList();
     if (vehicles != nullptr)
     {
-      for (unsigned int i = 0; i < showroom->GetCount() && i < showroom->GetCapacity(); i++)
+      for (unsigned int i = 0; i < m_showrooms[x]->GetCount() && i < m_showrooms[x]->GetCapacity(); i++)
       {
         vehicles[i].Display();
         total_car_price += vehicles[i].GetPrice();
@@ -67,5 +70,6 @@ void Dealership::ShowInventory() const
 
 Dealership::~Dealership()
 {
+  delete[] m_showrooms;
   std::cout << m_dealer_name << " destructor called." << std::endl;
 }

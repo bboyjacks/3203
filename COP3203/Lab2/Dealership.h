@@ -18,6 +18,7 @@ public:
 private:
   std::string m_dealer_name;
   int m_num_showroom;
-  std::vector<const Showroom*> m_showrooms;
+  int m_showroom_index;
+  const Showroom** m_showrooms;
 };
 
