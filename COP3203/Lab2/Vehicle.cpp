@@ -1,12 +1,16 @@
 #include "Vehicle.h"
 #include <algorithm>
 #include <iostream>
+#include <iomanip>
+
+// Helper consts
+static const std::string TAB = "\t";
 
 Vehicle::Vehicle(std::string _make,
                  std::string _model,
-                 int _year,
-                 int _price,
-                 int _miles) :
+                 const int _year,
+                 const int _price,
+                 const int _miles) :
   m_make(std::move(_make)),
   m_model(std::move(_model)),
   m_year(_year),
@@ -48,12 +52,12 @@ Vehicle& Vehicle::operator=(Vehicle&& _other_vehicle) noexcept
 
 void Vehicle::Display() const
 {
-  std::cout << "Called Vehicle::Display!" << std::to_string(m_year) << std::endl;
+  std::cout << GetYearMakeModel() << TAB + "$" << static_cast<int>(GetPrice()) << TAB + std::to_string(m_miles) << std::endl;
 }
 
 std::string Vehicle::GetYearMakeModel() const
 {
-  return "Year: " + std::to_string(m_year) + " Model: " + m_model;
+  return std::to_string(m_year) + TAB + m_model;
 }
 
 float Vehicle::GetPrice() const

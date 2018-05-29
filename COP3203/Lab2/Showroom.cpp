@@ -4,7 +4,6 @@
 
 Showroom::Showroom(std::string _showroom_name, int _max_capacity) :
   m_showroom_name(std::move(_showroom_name)),
-  m_vehicles{ nullptr },
   m_max_capacity(_max_capacity),
   m_cur_num_vehicle(0)
 {
@@ -61,4 +60,7 @@ const char* Showroom::GetName() const
   return m_showroom_name.c_str();
 }
 
-Showroom::~Showroom() = default;
+Showroom::~Showroom() 
+{
+  std::cout << GetName() << " destructor called." << std::endl;
+}
