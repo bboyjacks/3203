@@ -22,9 +22,8 @@ public:
   const char* GetName() const;
 
   virtual ~Showroom();
-private:
   std::string m_showroom_name;
-  const Vehicle** m_vehicles;
+  Vehicle* m_vehicles;
   int m_max_capacity;
   int m_cur_num_vehicle;
 };

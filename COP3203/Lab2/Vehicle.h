@@ -5,11 +5,12 @@
 class Vehicle
 {
 public:
+  Vehicle();
   Vehicle(std::string _make,
           std::string _model,
-          int _year,
-          int _price,
-          int _miles);
+          const int _year,
+          const int _price,
+          const int _miles);
   Vehicle(const Vehicle& _other_vehicle);
   Vehicle(Vehicle&& _other_vehicle) noexcept;
   Vehicle& operator=(const Vehicle& _other_vehicle);
@@ -20,7 +21,6 @@ public:
   float GetPrice() const;
 
   virtual ~Vehicle();
-private:
   std::string m_make;
   std::string m_model;
   int m_year;

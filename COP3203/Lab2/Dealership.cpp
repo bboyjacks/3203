@@ -6,7 +6,9 @@
 Dealership::Dealership(std::string _dealer_name, const int _num_showroom):
   m_dealer_name(std::move(_dealer_name)),
   m_num_showroom(_num_showroom),
-  m_showroom_index(0)
+  m_showroom_index(0),
+  m_total_car_price(0.0f),
+  m_total_car_count(0.0f)
 {
   m_showrooms = new Showroom[m_num_showroom];
 }
@@ -15,12 +17,27 @@ Dealership::Dealership(const Dealership& _other)
 {
   m_dealer_name = _other.m_dealer_name;
   m_num_showroom = _other.m_num_showroom;
+  m_total_car_price = 0.0f;
+  m_total_car_count = 0.0f;
+
+  m_showroom_index = _other.m_showroom_index;
+  m_showrooms = new Showroom[m_num_showroom];
+  for (unsigned int i = 0; i < m_showroom_index; i++)
+    m_showrooms[i] = _other.m_showrooms[i];
 }
 
 Dealership::Dealership(Dealership&& _other) noexcept
 {
   m_dealer_name = std::move(_other.m_dealer_name);
   m_num_showroom = _other.m_num_showroom;
+
+  m_total_car_price = 0.0f;
+  m_total_car_count = 0.0f;
+
+  m_showroom_index = _other.m_showroom_index;
+  m_showrooms = new Showroom[m_num_showroom];
+  for (unsigned int i = 0; i < m_showroom_index; i++)
+    m_showrooms[i] = _other.m_showrooms[i];
 }
 
 Dealership& Dealership::operator=(const Dealership& _other)
@@ -43,7 +60,8 @@ void Dealership::AddShowroom(const Showroom* _showroom)
   {
     if (m_showroom_index < m_num_showroom)
     {
-      m_showrooms[m_showroom_index++] = *_showroom;
+      Showroom* new_showroom = new Showroom(*_showroom);
+      m_showrooms[m_showroom_index++] = *new_showroom;
     }
   }
 }

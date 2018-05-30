@@ -6,6 +6,15 @@
 // Helper consts
 static const std::string TAB = "\t";
 
+Vehicle::Vehicle() :
+  m_make(""),
+  m_model(""),
+  m_year(0),
+  m_price(0),
+  m_miles(0)
+{
+}
+
 Vehicle::Vehicle(std::string _make,
                  std::string _model,
                  const int _year,
@@ -72,4 +81,7 @@ float Vehicle::GetPrice() const
   return m_price;
 }
 
-Vehicle::~Vehicle() = default;
+Vehicle::~Vehicle()
+{
+
+}
