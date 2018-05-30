@@ -21,6 +21,7 @@ public:
   float GetPrice() const;
 
   virtual ~Vehicle();
+private:
   std::string m_make;
   std::string m_model;
   int m_year;

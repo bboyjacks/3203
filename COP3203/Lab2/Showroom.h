@@ -22,6 +22,7 @@ public:
   const char* GetName() const;
 
   virtual ~Showroom();
+private:
   std::string m_showroom_name;
   Vehicle* m_vehicles;
   int m_max_capacity;
