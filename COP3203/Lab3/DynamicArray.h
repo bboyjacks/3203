@@ -78,12 +78,20 @@ void DynamicArray<T>::Resize(unsigned int _new_size)
 template <class T>
 void DynamicArray<T>::Remove(unsigned int _index)
 {
-  if (m_capacity > 0)
+  if (0 <= _index && _index < m_size && m_size > 0)
   {
+    for (unsigned int i = _index; i < m_size - 1; i++)
+    {
+      m_data[i] = m_data[i + 1];
+    }
     m_size--;
-    const int num = m_size / 10;
-    m_capacity = ((num + 1) * 10);
-    RefreshData();
+
+    if (m_capacity - m_size > 10)
+    {
+      const int num = m_size / 10;
+      m_capacity = ((num + 1) * 10);
+      RefreshData();
+    }
   }
 }
 
@@ -133,7 +141,10 @@ void DynamicArray<T>::RefreshData()
 {
   if (m_capacity > 0)
   {
+    T* new_data = new T[m_capacity];
+    for (unsigned int i = 0; i < m_size; i++)
+      new_data[i] = m_data[i];
     delete[] m_data;
-    m_data = new T[m_capacity];
+    m_data = new_data;
   }
 }
