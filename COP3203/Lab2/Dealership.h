@@ -22,6 +22,6 @@ private:
   unsigned int m_showroom_index;
   Showroom* m_showrooms;
   mutable float m_total_car_price;
-  mutable float m_total_car_count;
+  mutable int m_total_car_count;
 };
 

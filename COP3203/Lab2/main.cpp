@@ -41,8 +41,6 @@ int main()
     cout << endl << "Calling destructors..." << endl;
   }
 
-
-
   std::getchar();
   return 0;
 }
