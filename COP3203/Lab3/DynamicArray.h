@@ -9,6 +9,10 @@ public:
   const T* GetData() const;
 
   const T& operator[](unsigned int _index) const;
+  T& operator[](unsigned int _index);
+
+  const T& At(unsigned int _index) const;
+  T& At(unsigned int _index);
 
   void Add(const T& _data);
   void Resize(unsigned int _new_size);
@@ -26,7 +30,7 @@ private:
   unsigned int m_capacity;
   unsigned int m_size;
 
-  static const int INCREMENT_CAPACITY = 10;
+  static const int INCREMENT_CAPACITY = 1;
 };
 
 
@@ -51,9 +55,33 @@ const T* DynamicArray<T>::GetData() const
 template <class T>
 const T& DynamicArray<T>::operator[](unsigned int _index) const
 {
-  if (_index < GetSize())
+  if (0 <= _index && _index < GetSize())
     return m_data[_index];
-  return -1;
+  throw "Error: Invalid index";
+}
+
+template <class T>
+T& DynamicArray<T>::operator[](unsigned int _index)
+{
+  if (0 <= _index && _index < GetSize())
+    return m_data[_index];
+  throw "Error: Invalid index";
+}
+
+template <class T>
+const T& DynamicArray<T>::At(unsigned int _index) const
+{
+  if (0 <= _index && _index < GetSize())
+    return m_data[_index];
+  throw "Error: Invalid index";
+}
+
+template <class T>
+T& DynamicArray<T>::At(unsigned int _index)
+{
+  if (0 <= _index && _index < GetSize())
+    return m_data[_index];
+  throw "Error: Invalid index";
 }
 
 template <class T>
@@ -61,7 +89,9 @@ void DynamicArray<T>::Add(const T& _data)
 {
   if (m_size >= m_capacity)
   {
+    std::cout << "Resizing... old capacity: " << m_capacity << " New capacity: ";
     m_capacity += INCREMENT_CAPACITY;
+    std::cout << m_capacity << std::endl;
     RefreshData();
   }
   m_data[m_size] = _data;
@@ -71,8 +101,15 @@ void DynamicArray<T>::Add(const T& _data)
 template <class T>
 void DynamicArray<T>::Resize(unsigned int _new_size)
 {
-  m_capacity = _new_size;
-  RefreshData();
+  if (_new_size > 0)
+  {
+    std::cout << "Resizing... old capacity: " << m_capacity << " New capacity: ";
+    m_capacity = _new_size;
+    if (m_size > m_capacity)
+      m_size = m_capacity;
+    std::cout << m_capacity << std::endl;
+    RefreshData();
+  }
 }
 
 template <class T>
@@ -93,6 +130,8 @@ void DynamicArray<T>::Remove(unsigned int _index)
       RefreshData();
     }
   }
+  else
+    throw "Error! Invalid index";
 }
 
 template <class T>
@@ -110,30 +149,45 @@ DynamicArray<T>::DynamicArray(unsigned int _size) :
   m_capacity(0),
   m_size(0)
 {
+  if (_size > 0)
+  {
+    m_capacity = _size;
+  }
   RefreshData();
 }
 
 template <class T>
 DynamicArray<T>::DynamicArray(const DynamicArray& _d) :
-  m_data(_d.m_data),
-  m_capacity(0),
-  m_size(0)
+  m_capacity(_d.m_capacity),
+  m_size(_d.m_size)
 {
+  m_data = new T[m_size];
+  for (unsigned int i = 0; i < m_size; i++)
+  {
+    m_data[i] = _d.m_data[i];
+  }
   RefreshData();
 }
 
 template <class T>
 DynamicArray<T>& DynamicArray<T>::operator=(const DynamicArray& _d)
 {
-  m_data = _d.m_data;
   m_capacity = _d.m_capacity;
   m_size = _d.m_size;
+
+  m_data = new T[m_size];
+  for (unsigned int i = 0; i < m_size; i++)
+  {
+    m_data[i] = _d.m_data[i];
+  }
+  return *this;
 }
 
 template <class T>
 DynamicArray<T>::~DynamicArray()
 {
   delete[] m_data;
+  m_data = nullptr;
 }
 
 template<class T>
@@ -143,7 +197,10 @@ void DynamicArray<T>::RefreshData()
   {
     T* new_data = new T[m_capacity];
     for (unsigned int i = 0; i < m_size; i++)
-      new_data[i] = m_data[i];
+    {
+      if (m_data != nullptr)
+        new_data[i] = m_data[i];
+    }
     delete[] m_data;
     m_data = new_data;
   }
