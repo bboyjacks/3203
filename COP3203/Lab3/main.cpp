@@ -33,7 +33,7 @@ public:
   }
 };
 
-void TestOne();
+void PartOne();
 void TestTwo();
 void TestThree();
 void TestFour();
@@ -41,7 +41,7 @@ void TestFour();
 int main()
 {
   cout << "**** Testing the Dynamic Array ****" << endl << endl;
-  TestOne();
+  PartOne();
   TestTwo();
   TestThree();
   TestFour();
@@ -50,7 +50,7 @@ int main()
   return 0;
 }
 
-void TestOne()
+void PartOne()
 {
   cout << "Integer container: Initial capacity of 0" << endl;
   DynamicArray<int> data(0);
