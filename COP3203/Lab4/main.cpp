@@ -1,69 +1,75 @@
-#include <iostream>
+﻿#include <iostream>
 #include "stdio.h"
 
 using namespace std;
 
-double max_heightd(double v_i, double g)
+//Total impulse, change in momentum (p) solving for dv
+//Conservation of momentum
+double dv(double m_r, double m_e, double v_e)
 {
-  // v_f - v_i = a * t
-  // solve for t
-
-  // h = v_i * t + 1/2 * a * t^2
-  // return h as the max height
-  return 0;
+  //Consider only the change in velocity
+  //Do this by solving for the rocket's velocity in the rest frame
+  return (m_e * v_e) / (-m_r);
 }
 
-float max_heightf(float v_i, float g)
+double gravity(double height)
 {
-  // v_f - v_i = a * t
-  // solve for t
-
-  // h = v_i * t + 1/2 * a * t^2
-  // return h as the max height
-  return 0;
+  double earth_radius = 6371000.0; //earth's radius in meters
+  double earth_mass = 5972000000000000000000000.0; //5.972 × 10^24 kg
+  double G = 0.00000000006674; //Gravitational constant 6.674×10−11 m3⋅kg−1⋅s−2
+                               //calculate g from law of gravity
+  return (G * earth_mass) / ((earth_radius + height) * (earth_radius + height));
 }
 
-float simulatef(float v_i, float g, float dt)
+double simulate_field_g(double m_r, double m_e, double v_e, double dt, double ship_payload)
 {
-  //declare float versions to update the velocity and height
+  //declare to update the velocity and height
+  //rocket velocity, initially at rest
+  double v_r = 0.0;
+  //distance from surface, initially on the ground
+  double height = 0;
+  //gravitational acceleration (to be calculated)
+  double g = 0;
+  //original mass of the rocket
+  double m_r_new = m_r;
   //loop code
-  //condition to break the loop
+  //calculate g
   //update velocity
+  //update the mass
   //update height
+  while (m_r_new / m_r  > ship_payload)
+  {
+    g = gravity(height);
+    v_r += (dv(m_r_new, m_e, v_e) - g) * dt;
+    m_r_new -= m_e * dt;
+    height += v_r * dt;
+  }
   //return the height
-  return 0;
-}
-
-double simulated(double v_i, double g, double dt)
-{
-  //declare double versions to update the velocity and height
-  //loop code
-  //condition to break the loop
-  //update velocity
-  //update height
-  //return the height
-  return 0;
+  return height;
 }
 
 int main()
 {
-  double gd = -9.81; // gravitational acceleration
-  double v_id = 500.0; // initial velocity
-  double dtd = 0.01; // delta t, change in time, time resolution
-                     // analytic (double) height (m) = 12742.1
-                     // analytic (float) height (m) = 12742.1
-                     // simulation (double) height (m) = 12739.6
-                     // simulation (float) height (m) = 12738.3
+  double m_r, m_e, v_e, dt, ship_payload;
+  m_r = 100.0; //kg mass of the rocket
+  m_e = 0.1; //kg mass of the exhaust (burnt per time step)
+  v_e = -10000.0; //m/s velocity of exhaust
+  dt = 0.1;
+  ship_payload = 0.1; //ratio of weight to stop sim, 0.1 -> 90% fuel burned
+                      // dv = 10
+                      // gravity (m/s^2) = 9.81953
+                      // height (m) when fuel is spent = 2.93755e+06
 
-                     // cin >> gd;
-                     // cin >> v_id;
-                     // cin >> dtd;
-  float gf = gd;
-  float v_if = v_id;
-  float dtf = dtd;
-  cout << "analytic (double) height (m) = " << max_heightd(v_id, gd) << endl;
-  cout << "analytic (float) height (m) = " << max_heightf(v_if, gf) << endl;
-  cout << "simulation (double) height (m) = " << simulated(v_id, gd, dtd) << endl;
-  cout << "simulation (float) height (m) = " << simulatef(v_if, gf, dtf) << endl;
+                       //cin >> m_r;
+                       //cin >> m_e;
+                       //cin >> v_e;
+                       //cin >> dt;
+                       //cin >> ship_payload;
+
+  cout << "dv = " << dv(m_r, m_e, v_e) << endl;
+  cout << "gravity (m/s^2) = " << gravity(0) << endl;
+  double burned_fuel_height = simulate_field_g(m_r, m_e, v_e, dt, ship_payload);
+  cout << "height (m) when fuel is spent = " << burned_fuel_height << endl;
+  getchar();
   return 0;
 }
