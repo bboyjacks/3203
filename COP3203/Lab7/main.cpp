@@ -2,6 +2,74 @@
 #include <iomanip>
 using namespace std;
 
+struct Lego
+{
+  int m_number;
+  string m_theme;
+  string m_name;
+  int m_minifigs;
+  int m_pieces;
+  double m_usprice;
+
+  Lego(const int _number,
+       string _theme,
+       string _name,
+       const int _minifigs,
+       const int _pieces,
+       const double _usprice)
+    : m_number(_number),
+      m_theme(std::move(_theme)),
+      m_name(std::move(_name)),
+      m_minifigs(_minifigs),
+      m_pieces(_pieces),
+      m_usprice(_usprice)
+  {}
+
+  Lego(const Lego& _other)
+  {
+    m_number = _other.m_number;
+    m_theme = _other.m_theme;
+    m_name = _other.m_name;
+    m_minifigs = _other.m_minifigs;
+    m_pieces = _other.m_pieces;
+    m_usprice = _other.m_usprice;
+  }
+
+  Lego(Lego&& _other) noexcept
+  {
+    m_number = _other.m_number;
+    m_theme = _other.m_theme;
+    m_name = _other.m_name;
+    m_minifigs = _other.m_minifigs;
+    m_pieces = _other.m_pieces;
+    m_usprice = _other.m_usprice;
+  }
+
+  Lego& operator=(const Lego& _other)
+  {
+    Lego tmp(_other);
+    *this = std::move(tmp);
+    return *this;
+  }
+
+  Lego& operator=(Lego&& _other) noexcept
+  {
+    if (this == &_other)
+    {
+      return *this;
+    }
+    m_number = _other.m_number;
+    m_theme = _other.m_theme;
+    m_name = _other.m_name;
+    m_minifigs = _other.m_minifigs;
+    m_pieces = _other.m_pieces;
+    m_usprice = _other.m_usprice;
+    return *this;
+  }
+
+  ~Lego() = default;
+};
+
 int main()
 {
   cout << std::fixed << setprecision(2);
