@@ -18,8 +18,8 @@ void TestInsertAt();
 
 int main()
 {
-  int testNum;
-  cin >> testNum;
+  int testNum = 6;
+  //cin >> testNum;
   if (testNum == 1)
     TestAddHead();
   else if (testNum == 2)
@@ -41,6 +41,22 @@ int main()
   else if (testNum == 10)
     TestInsertAt();
 
+  LinkedList<int> l1;
+  l1.AddHead(1);
+  l1.AddHead(2);
+  l1.AddHead(3);
+
+
+  LinkedList<int> l2;
+  l2.AddHead(1);
+  l2.AddHead(2);
+  l2.AddHead(3);
+
+  if (l1 == l2)
+    std::cout << "True" << std::endl;
+  else
+    std::cout << "False" << std::endl;
+  std::getchar();
   return 0;
 }
 
