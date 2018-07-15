@@ -261,6 +261,32 @@ void GetPriceInfo(vector<Lego*> _legos)
   std::cout << max_price << std::endl;
 }
 
+void GetMinifigureInfo(vector<Lego*> _legos)
+{
+  int max_minifig_count = 0;
+  int min_minifig_count = INT_MAX;
+  int total_minifig_count = 0;
+
+  for (Lego* lego : _legos)
+  {
+    if (max_minifig_count < lego->m_minifigs)
+    {
+      max_minifig_count = lego->m_minifigs;
+    }
+
+    if (min_minifig_count > lego->m_minifigs)
+    {
+      min_minifig_count = lego->m_minifigs;
+    }
+
+    total_minifig_count += lego->m_minifigs;
+  }
+  std::cout << "Average minifigure count for " << _legos.size() << " sets: " << total_minifig_count / _legos.size() << std::endl;
+  std::cout << "Set with the smallest minifigure count: " << std::endl;
+  std::cout << min_minifig_count << std::endl;
+  std::cout << "Set with the largest minifigure count: " << std::endl;
+  std::cout << max_minifig_count << std::endl;
+}
 
 int main()
 {
@@ -345,6 +371,10 @@ int main()
 
   case 6:
     GetPriceInfo(legos);
+    break;
+
+  case 7:
+    GetMinifigureInfo(legos);
     break;
 
   }
