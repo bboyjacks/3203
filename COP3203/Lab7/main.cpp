@@ -207,6 +207,61 @@ void SearchForThemeContaining(vector<Lego*> _legos, const string& _substring)
     lego->Print2();
 }
 
+void GetPartCountInfo(vector<Lego*> _legos)
+{
+  int max_part_count = 0;
+  int min_part_count = INT_MAX;
+  int total_part_count = 0;
+
+  for (Lego* lego : _legos)
+  {
+    if (max_part_count < lego->m_pieces)
+    {
+      max_part_count = lego->m_pieces;
+    }
+
+    if (min_part_count > lego->m_pieces)
+    {
+      min_part_count = lego->m_pieces;
+    }
+
+    total_part_count += lego->m_pieces;
+  }
+  std::cout << "Average part count for " << _legos.size() << " sets: " << total_part_count / _legos.size() << std::endl;
+  std::cout << "Set with the smallest part cout: " << std::endl;
+  std::cout << min_part_count << std::endl;
+  std::cout << "Set with the largest part count: " << std::endl;
+  std::cout << max_part_count << std::endl;
+}
+
+void GetPriceInfo(vector<Lego*> _legos)
+{
+  int max_price = 0;
+  int min_price = INT_MAX;
+  int total_price = 0;
+
+  for (Lego* lego : _legos)
+  {
+    if (max_price < lego->m_usprice)
+    {
+      max_price = lego->m_usprice;
+    }
+
+    if (min_price > lego->m_usprice)
+    {
+      min_price = lego->m_usprice;
+    }
+
+    total_price += lego->m_usprice;
+  }
+  std::cout << "Average price for " << _legos.size() << " sets: " << total_price / _legos.size() << std::endl;
+  std::cout << "Set with the smallest price: " << std::endl;
+  std::cout << min_price << std::endl;
+  std::cout << "Set with the largest price: " << std::endl;
+  std::cout << max_price << std::endl;
+}
+
+
 int main()
 {
   cout << std::fixed << setprecision(2);
@@ -283,6 +338,14 @@ int main()
     SearchForThemeContaining(legos, substring);
     break;
   }
+
+  case 5:
+    GetPartCountInfo(legos);
+    break;
+
+  case 6:
+    GetPriceInfo(legos);
+    break;
 
   }
 
