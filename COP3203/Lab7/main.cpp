@@ -1,5 +1,8 @@
 #include <iostream>
+#include <fstream>
 #include <iomanip>
+#include <vector>
+#include <string>
 using namespace std;
 
 struct Lego
@@ -67,8 +70,51 @@ struct Lego
     return *this;
   }
 
+  void Print()
+  {
+    std::cout << "Number: " << m_number << std::endl;
+    std::cout << "Theme: " << m_theme << std::endl;
+    std::cout << "Name: " << m_name << std::endl;
+    std::cout << "Minifigs: " << m_minifigs << std::endl;
+    std::cout << "Pieces: " << m_pieces << std::endl;
+    std::cout << "Price: " << m_usprice << std::endl;
+
+  }
+
   ~Lego() = default;
 };
+
+void LoadFromOneFile(vector<Lego*>& _legos, const string& _file)
+{
+  ifstream file(_file);
+  string line;
+  // Iterate through each line and split the content using delimeter
+  while (getline(file, line))
+  {
+    vector<string> lego_params;
+    vector<char> token;
+    for (size_t i = 0; i < line.size(); ++i)
+    {
+      if (line[i] == ',')
+      {
+        const string token_str(token.begin(), token.end());
+        lego_params.push_back(token_str);
+        token.clear();
+      }
+      else
+      {
+        token.push_back(line[i]);
+      }
+    }
+  }
+  // Close the File
+  file.close();
+}
+
+void LoadFromMultiFile(vector<Lego*>& _legos, const vector<string&> _files)
+{
+
+}
 
 int main()
 {
