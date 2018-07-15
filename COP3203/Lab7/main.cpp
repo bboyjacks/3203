@@ -12,14 +12,14 @@ struct Lego
   string m_name;
   int m_minifigs;
   int m_pieces;
-  double m_usprice;
+  float m_usprice;
 
   Lego(const int _number,
-       string _theme,
-       string _name,
-       const int _minifigs,
-       const int _pieces,
-       const double _usprice)
+	  string _theme,
+	  string _name,
+	  const int _minifigs,
+	  const int _pieces,
+	  const float _usprice)
     : m_number(_number),
       m_theme(std::move(_theme)),
       m_name(std::move(_name)),
@@ -86,11 +86,18 @@ struct Lego
 
 void LoadFromOneFile(vector<Lego*>& _legos, const string& _file)
 {
+  int first_line = 0;
+
   ifstream file(_file);
   string line;
   // Iterate through each line and split the content using delimeter
   while (getline(file, line))
   {
+	  if (first_line == 0)
+	  {
+		  first_line++;
+		  continue;
+	  }
     vector<string> lego_params;
     vector<char> token;
     for (size_t i = 0; i < line.size(); ++i)
@@ -106,14 +113,31 @@ void LoadFromOneFile(vector<Lego*>& _legos, const string& _file)
         token.push_back(line[i]);
       }
     }
+
+    const string token_str(token.begin(), token.end());
+    lego_params.push_back(token_str);
+    token.clear();
+
+	  const int number = lego_params[0].empty() ? 0 : stoi(lego_params[0]);
+	  const string theme = lego_params[1];
+	  const string name = lego_params[2];
+	  const int minifigs = lego_params[3].empty() ? 0 : stoi(lego_params[3]);
+	  const int pieces = lego_params[4].empty() ? 0 : stoi(lego_params[4]);
+	  const float price = lego_params[5].empty() ? 0 : stof(lego_params[5]);
+
+	  Lego *new_lego = new Lego(number, theme, name, minifigs, pieces, price);
+	  _legos.push_back(new_lego);
   }
   // Close the File
   file.close();
 }
 
-void LoadFromMultiFile(vector<Lego*>& _legos, const vector<string&> _files)
+void LoadFromMultiFile(vector<Lego*>& _legos, const vector<string>& _files)
 {
-
+  for (const string& file : _files)
+  {
+    LoadFromOneFile(_legos, file);
+  }
 }
 
 int main()
@@ -128,6 +152,25 @@ int main()
   std::cin >> option;
 
   /*======= Load data from file(s) =======*/
+  vector<Lego*> legos;
+  vector<string> files = { "SAMPLE_lego1.csv", "SAMPLE_lego2.csv", "SAMPLE_lego3.csv" };
+
+  switch (option)
+  {
+  case 1:
+    LoadFromOneFile(legos, files[0]);
+    break;
+  case 2:
+    LoadFromOneFile(legos, files[1]);
+    break; 
+  case 3:
+    LoadFromOneFile(legos, files[2]);
+    break;
+  case 4:
+    LoadFromMultiFile(legos, files);
+    break;
+  }
+
   /*======= Print out how many sets were loaded =======*/
 
   /* Imagine your program had a menu like this:
