@@ -78,7 +78,12 @@ struct Lego
     std::cout << "Minifigs: " << m_minifigs << std::endl;
     std::cout << "Pieces: " << m_pieces << std::endl;
     std::cout << "Price: " << m_usprice << std::endl;
+  }
 
+  void Print2()
+  {
+    // set id, name, and price
+    std::cout << m_number << " " << m_name << " " << m_usprice << std::endl;
   }
 
   ~Lego() = default;
@@ -140,6 +145,68 @@ void LoadFromMultiFile(vector<Lego*>& _legos, const vector<string>& _files)
   }
 }
 
+void GetMostExpensiveSet(vector<Lego*> _legos)
+{
+  Lego *max_lego = _legos.front();
+  int max_price = 0;
+  for (Lego* lego : _legos)
+  {
+    if (max_price < lego->m_usprice)
+    {
+      max_price = lego->m_usprice;
+      max_lego = lego;
+    }
+  }
+
+  max_lego->Print();
+}
+
+void GetLargestPieceCount(vector<Lego*> _legos)
+{
+  Lego *max_lego = _legos.front();
+  int max_price = 0;
+  for (Lego* lego : _legos)
+  {
+    if (max_price < lego->m_pieces)
+    {
+      max_price = lego->m_pieces;
+      max_lego = lego;
+    }
+  }
+
+  max_lego->Print();
+}
+
+void SearchForNameContaining(vector<Lego*> _legos, const string& _substring)
+{
+  vector<Lego*> search_results;
+  for (Lego* lego : _legos)
+  {
+    if (lego->m_name.find(_substring) != string::npos)
+    {
+      search_results.push_back(lego);
+    }
+  }
+
+  for (Lego* lego : search_results)
+    lego->Print2();
+}
+
+void SearchForThemeContaining(vector<Lego*> _legos, const string& _substring)
+{
+  vector<Lego*> search_results;
+  for (Lego* lego : _legos)
+  {
+    if (lego->m_theme.find(_substring) != string::npos)
+    {
+      search_results.push_back(lego);
+    }
+  }
+
+  for (Lego* lego : search_results)
+    lego->Print2();
+}
+
 int main()
 {
   cout << std::fixed << setprecision(2);
@@ -173,7 +240,7 @@ int main()
 
   /*======= Print out how many sets were loaded =======*/
 
-  /* Imagine your program had a menu like this:
+  /* Imagine your program had a menu like this: */
   cout << "1. Most Expensive set" << endl;
   cout << "2. Largest piece count" << endl;
   cout << "3. Search for set name containing..." << endl;
@@ -183,13 +250,43 @@ int main()
   cout << "7. Minifigure information" << endl;
   cout << "8. If you bought one of everything..." << endl;
   cout << "0. Exit" << endl;
-  */
+
   int choice;
   cin >> choice;
   cin.get();  // Clear newline character for any later input
 
               /*======= Based on the choice, execute the appropriate task and show the results =======*/
+  switch (choice)
+  {
+  case 1:
+    GetMostExpensiveSet(legos);
+    break;
+  case 2:
+    GetLargestPieceCount(legos);
+    break;
+  case 3:
+  {
+    cout << "Enter substring: ";
+    string substring;
+    cin >> substring;
+    cin.get();
+    SearchForNameContaining(legos, substring);
+    break;
+  }
 
+  case 4:
+  {
+    cout << "Enter substring: ";
+    string substring;
+    cin >> substring;
+    cin.get();
+    SearchForThemeContaining(legos, substring);
+    break;
+  }
+
+  }
+
+  getchar();
   return 0;
 }
 
