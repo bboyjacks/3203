@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <vector>
 #include <string>
+#include <limits.h>
 using namespace std;
 
 struct Lego
@@ -72,18 +73,18 @@ struct Lego
 
   void Print()
   {
+    std::cout << "Name: " << m_name << std::endl;
     std::cout << "Number: " << m_number << std::endl;
     std::cout << "Theme: " << m_theme << std::endl;
-    std::cout << "Name: " << m_name << std::endl;
-    std::cout << "Minifigs: " << m_minifigs << std::endl;
-    std::cout << "Pieces: " << m_pieces << std::endl;
-    std::cout << "Price: " << m_usprice << std::endl;
+    std::cout << "Price: $" << m_usprice << std::endl;
+    std::cout << "Minifigures: " << m_minifigs << std::endl;
+    std::cout << "Piece count: " << m_pieces << std::endl << std::endl;
   }
 
   void Print2()
   {
     // set id, name, and price
-    std::cout << m_number << " " << m_name << " " << m_usprice << std::endl;
+    std::cout << m_number << " " << m_name << " $" << m_usprice << " " << std::endl;
   }
 
   ~Lego() = default;
@@ -128,7 +129,12 @@ void LoadFromOneFile(vector<Lego*>& _legos, const string& _file)
 	  const string name = lego_params[2];
 	  const int minifigs = lego_params[3].empty() ? 0 : stoi(lego_params[3]);
 	  const int pieces = lego_params[4].empty() ? 0 : stoi(lego_params[4]);
-	  const float price = lego_params[5].empty() ? 0 : stof(lego_params[5]);
+    float price = 0.0f;
+    try
+    {
+      price = stof(lego_params[5]);
+    }
+    catch (exception e) {}
 
 	  Lego *new_lego = new Lego(number, theme, name, minifigs, pieces, price);
 	  _legos.push_back(new_lego);
@@ -158,6 +164,8 @@ void GetMostExpensiveSet(vector<Lego*> _legos)
     }
   }
 
+  std::cout << "Total number of sets: " << _legos.size() << std::endl << std::endl;
+  std::cout << "The most expensive set is:" << std::endl;
   max_lego->Print();
 }
 
@@ -174,6 +182,8 @@ void GetLargestPieceCount(vector<Lego*> _legos)
     }
   }
 
+  std::cout << "Total number of sets: " << _legos.size() << std::endl << std::endl;
+  std::cout << "The set with the highest parts count:" << std::endl;
   max_lego->Print();
 }
 
@@ -187,9 +197,18 @@ void SearchForNameContaining(vector<Lego*> _legos, const string& _substring)
       search_results.push_back(lego);
     }
   }
-
-  for (Lego* lego : search_results)
-    lego->Print2();
+  std::cout << "Total number of sets: " << _legos.size() << std::endl << std::endl;
+  if (search_results.size() != 0)
+  {
+    std::cout << "Sets matching \"" << _substring << "\":" << std::endl;
+    for (Lego* lego : search_results)
+      lego->Print2();
+    std::cout << std::endl;
+  }
+  else
+  {
+    std::cout << "No sets found matching that search term" << std::endl;
+  }
 }
 
 void SearchForThemeContaining(vector<Lego*> _legos, const string& _substring)
@@ -203,8 +222,18 @@ void SearchForThemeContaining(vector<Lego*> _legos, const string& _substring)
     }
   }
 
-  for (Lego* lego : search_results)
-    lego->Print2();
+  std::cout << "Total number of sets: " << _legos.size() << std::endl << std::endl;
+  if (search_results.size() != 0)
+  {
+    std::cout << "Sets matching \"" << _substring << "\":" << std::endl;
+    for (Lego* lego : search_results)
+      lego->Print2();
+    std::cout << std::endl;
+  }
+  else
+  {
+    std::cout << "No sets found matching that search term" << std::endl;
+  }
 }
 
 void GetPartCountInfo(vector<Lego*> _legos)
@@ -212,53 +241,82 @@ void GetPartCountInfo(vector<Lego*> _legos)
   int max_part_count = 0;
   int min_part_count = INT_MAX;
   int total_part_count = 0;
+  Lego *max_lego = _legos.front();
+  Lego *min_lego = _legos.front();
+  int total_nonzero_part_count = 0;
 
   for (Lego* lego : _legos)
   {
-    if (max_part_count < lego->m_pieces)
+    if (lego->m_pieces > 0)
     {
-      max_part_count = lego->m_pieces;
-    }
+      if (max_part_count < lego->m_pieces)
+      {
+        max_part_count = lego->m_pieces;
+        max_lego = lego;
+      }
 
-    if (min_part_count > lego->m_pieces)
-    {
-      min_part_count = lego->m_pieces;
-    }
+      if (min_part_count > lego->m_pieces)
+      {
+        min_part_count = lego->m_pieces;
+        min_lego = lego;
+      }
 
-    total_part_count += lego->m_pieces;
+      total_part_count += lego->m_pieces;
+      total_nonzero_part_count += 1;
+    }
   }
-  std::cout << "Average part count for " << _legos.size() << " sets: " << total_part_count / _legos.size() << std::endl;
-  std::cout << "Set with the smallest part cout: " << std::endl;
-  std::cout << min_part_count << std::endl;
-  std::cout << "Set with the largest part count: " << std::endl;
-  std::cout << max_part_count << std::endl;
+
+  std::cout << "Total number of sets: " << _legos.size() << std::endl << std::endl;
+
+  std::cout << "Average part count for "<< total_nonzero_part_count << " sets: " << total_part_count / total_nonzero_part_count << std::endl << std::endl;
+  std::cout << "Set with the smallest part count:" << std::endl;
+  min_lego->Print();
+  std::cout << "Set with the largest part count:" << std::endl;
+  max_lego->Print();
 }
 
 void GetPriceInfo(vector<Lego*> _legos)
 {
   int max_price = 0;
   int min_price = INT_MAX;
-  int total_price = 0;
+  float total_price = 0;
+  Lego *max_lego = _legos.front();
+  Lego *min_lego = _legos.front();
+  int total_non_zero_set = 0;
 
   for (Lego* lego : _legos)
   {
-    if (max_price < lego->m_usprice)
+    if (lego->m_usprice > 0)
     {
-      max_price = lego->m_usprice;
-    }
+      if (max_price < lego->m_usprice)
+      {
+        max_price = lego->m_usprice;
+        max_lego = lego;
+      }
 
-    if (min_price > lego->m_usprice)
-    {
-      min_price = lego->m_usprice;
-    }
+      if (min_price > lego->m_usprice)
+      {
+        min_price = lego->m_usprice;
+        min_lego = lego;
+      }
 
-    total_price += lego->m_usprice;
+      total_price += lego->m_usprice;
+      total_non_zero_set += 1;
+    }
   }
-  std::cout << "Average price for " << _legos.size() << " sets: " << total_price / _legos.size() << std::endl;
-  std::cout << "Set with the smallest price: " << std::endl;
-  std::cout << min_price << std::endl;
-  std::cout << "Set with the largest price: " << std::endl;
-  std::cout << max_price << std::endl;
+
+  std::cout << "Total number of sets: " << _legos.size() << std::endl << std::endl;
+
+  if (total_non_zero_set != 0)
+  {
+    std::cout << "Average price for " << total_non_zero_set << " sets: $" << total_price / total_non_zero_set << std::endl << std::endl;
+    std::cout << "Least expensive set:" << std::endl;
+    min_lego->Print();
+    std::cout << "Most expensive set:" << std::endl;
+    max_lego->Print();
+  }
+  else
+    cout << "Error in price" << endl;
 }
 
 void GetMinifigureInfo(vector<Lego*> _legos)
@@ -266,26 +324,61 @@ void GetMinifigureInfo(vector<Lego*> _legos)
   int max_minifig_count = 0;
   int min_minifig_count = INT_MAX;
   int total_minifig_count = 0;
+  Lego *max_lego = _legos.front();
+  Lego *min_lego = _legos.front();
+  int total_non_zero_minifig = 0;
 
   for (Lego* lego : _legos)
   {
-    if (max_minifig_count < lego->m_minifigs)
+    if (lego->m_minifigs > 0)
     {
-      max_minifig_count = lego->m_minifigs;
-    }
 
-    if (min_minifig_count > lego->m_minifigs)
-    {
-      min_minifig_count = lego->m_minifigs;
-    }
+      if (max_minifig_count < lego->m_minifigs)
+      {
+        max_minifig_count = lego->m_minifigs;
+        max_lego = lego;
+      }
 
+      if (min_minifig_count > lego->m_minifigs)
+      {
+        min_minifig_count = lego->m_minifigs;
+        min_lego = lego;
+      }
+
+      total_minifig_count += lego->m_minifigs;
+      total_non_zero_minifig += 1;
+    }
+  }
+
+  std::cout << "Total number of sets: " << _legos.size() << std::endl << std::endl;
+
+  std::cout << "Average number of minifigures: " << total_minifig_count / total_non_zero_minifig << std::endl << std::endl;
+  std::cout << "Set with the most minifigures:" << std::endl;
+  max_lego->Print();
+  std::cout << "Set with the fewest minifigures:" << std::endl;
+  min_lego->Print();
+
+}
+
+void GetTotalInfo(vector<Lego*> _legos)
+{
+  float total_price = 0;
+  int total_pieces_count = 0;
+  int total_minifig_count = 0;
+
+  for (Lego* lego : _legos)
+  {
+    total_price += lego->m_usprice;
+    total_pieces_count += lego->m_pieces;
     total_minifig_count += lego->m_minifigs;
   }
-  std::cout << "Average minifigure count for " << _legos.size() << " sets: " << total_minifig_count / _legos.size() << std::endl;
-  std::cout << "Set with the smallest minifigure count: " << std::endl;
-  std::cout << min_minifig_count << std::endl;
-  std::cout << "Set with the largest minifigure count: " << std::endl;
-  std::cout << max_minifig_count << std::endl;
+
+
+  std::cout << "Total number of sets: " << _legos.size() << std::endl << std::endl;
+  cout << "If you bought one of everything..." << endl;
+  cout << "It would cost: $" << total_price << endl;
+  cout << "You would have " << total_pieces_count << " pieces in your collection" << endl;
+  cout << "You would have an army of " << total_minifig_count << " minifigures!" << std::endl;
 }
 
 int main()
@@ -301,7 +394,7 @@ int main()
 
   /*======= Load data from file(s) =======*/
   vector<Lego*> legos;
-  vector<string> files = { "SAMPLE_lego1.csv", "SAMPLE_lego2.csv", "SAMPLE_lego3.csv" };
+  vector<string> files = { "lego1.csv", "lego2.csv", "lego3.csv" };
 
   switch (option)
   {
@@ -322,15 +415,15 @@ int main()
   /*======= Print out how many sets were loaded =======*/
 
   /* Imagine your program had a menu like this: */
-  cout << "1. Most Expensive set" << endl;
-  cout << "2. Largest piece count" << endl;
-  cout << "3. Search for set name containing..." << endl;
-  cout << "4. Search themes..." << endl;
-  cout << "5. Part count information" << endl;
-  cout << "6. Price information" << endl;
-  cout << "7. Minifigure information" << endl;
-  cout << "8. If you bought one of everything..." << endl;
-  cout << "0. Exit" << endl;
+  //cout << "1. Most Expensive set" << endl;
+  //cout << "2. Largest piece count" << endl;
+  //cout << "3. Search for set name containing..." << endl;
+  //cout << "4. Search themes..." << endl;
+  //cout << "5. Part count information" << endl;
+  //cout << "6. Price information" << endl;
+  //cout << "7. Minifigure information" << endl;
+  //cout << "8. If you bought one of everything..." << endl;
+  //cout << "0. Exit" << endl;
 
   int choice;
   cin >> choice;
@@ -347,20 +440,16 @@ int main()
     break;
   case 3:
   {
-    cout << "Enter substring: ";
     string substring;
-    cin >> substring;
-    cin.get();
+    getline(cin, substring);
     SearchForNameContaining(legos, substring);
     break;
   }
 
   case 4:
   {
-    cout << "Enter substring: ";
     string substring;
-    cin >> substring;
-    cin.get();
+    getline(cin, substring);
     SearchForThemeContaining(legos, substring);
     break;
   }
@@ -375,6 +464,13 @@ int main()
 
   case 7:
     GetMinifigureInfo(legos);
+    break;
+
+  case 8:
+    GetTotalInfo(legos);
+    break;
+
+  case 0:
     break;
 
   }
