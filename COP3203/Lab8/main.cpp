@@ -173,6 +173,22 @@ void HeroWithMostItem(vector<Hero*> _heroes)
   PrintHero(*hero_with_max_item);
 }
 
+void StrongestHero(vector<Hero*> _heroes)
+{
+  int max_strength = 0;
+  const Hero *hero_with_max_strength = _heroes.front();
+  for (const Hero const* hero : _heroes)
+  {
+    if (max_strength < hero->m_strength)
+    {
+      max_strength = hero->m_strength;
+      hero_with_max_strength = hero;
+    }
+  }
+
+  PrintHero(*hero_with_max_strength);
+}
+
 int main()
 {
   cout << "Which file(s) to open?\n";
@@ -203,6 +219,9 @@ int main()
     break;
   case 2:
     HeroWithMostItem(heroes);
+    break;
+  case 3:
+    StrongestHero(heroes);
     break;
   }
   getchar();
