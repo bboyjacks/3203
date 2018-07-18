@@ -189,6 +189,24 @@ void StrongestHero(vector<Hero*> _heroes)
   PrintHero(*hero_with_max_strength);
 }
 
+void HeroWithGT18Intelligence(vector<Hero*> _heroes)
+{
+  vector<Hero*> selected_heroes;
+  for (Hero* hero : _heroes)
+  {
+    if (hero->m_intelligence > 18)
+    {
+      selected_heroes.push_back(hero);
+    }
+  }
+
+  cout << "Strong heroes: " << endl;
+  for (const Hero const* hero : selected_heroes)
+  {
+    PrintHero(*hero);
+  }
+}
+
 int main()
 {
   cout << "Which file(s) to open?\n";
@@ -222,6 +240,9 @@ int main()
     break;
   case 3:
     StrongestHero(heroes);
+    break;
+  case 4:
+    HeroWithGT18Intelligence(heroes);
     break;
   }
   getchar();
