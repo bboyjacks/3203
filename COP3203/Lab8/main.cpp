@@ -65,7 +65,7 @@ void PrintHero(const Hero& _hero)
   cout << "Magic armor: " << _hero.m_magic_armor << endl;
   cout << "Inventory:" << endl;
 
-  for (const Inventory* inventory : _hero.m_inventories)
+  for (const Inventory const* inventory : _hero.m_inventories)
   {
     cout << "    ";
     cout << inventory->m_name << ", ";
@@ -149,6 +149,14 @@ void LoadHeroes(vector<Hero*>& _heroes, const string& _file)
   }
 }
 
+void PrintAll(vector<Hero*> _heroes)
+{
+  for (const Hero const* hero : _heroes)
+  {
+    PrintHero(*hero);
+  }
+}
+
 int main()
 {
   cout << "Which file(s) to open?\n";
@@ -160,7 +168,6 @@ int main()
 
   vector<Hero*> heroes;
   LoadHeroes(heroes, "heroes.dat");
-  PrintHero(*heroes[0]);
 
   cout << "1. Print all heroes" << endl;
   cout << "2. Hero with the most items" << endl;
@@ -170,8 +177,15 @@ int main()
   cout << "6. Hero with the most valuable stuff" << endl << endl;
 
   std::cin >> option;
+  cin.get();
 
   /* Work your magic here */
-
+  switch (option)
+  {
+  case 1:
+    PrintAll(heroes);
+    break;
+  }
+  getchar();
   return 0;
 }
