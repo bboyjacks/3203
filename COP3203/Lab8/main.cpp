@@ -157,6 +157,22 @@ void PrintAll(vector<Hero*> _heroes)
   }
 }
 
+void HeroWithMostItem(vector<Hero*> _heroes)
+{
+  int max_inventory_size = 0;
+  const Hero *hero_with_max_item = _heroes.front();
+  for (const Hero const* hero : _heroes)
+  {
+    if (max_inventory_size < hero->m_inventories.size())
+    {
+      max_inventory_size = hero->m_inventories.size();
+      hero_with_max_item = hero;
+    }
+  }
+
+  PrintHero(*hero_with_max_item);
+}
+
 int main()
 {
   cout << "Which file(s) to open?\n";
@@ -184,6 +200,9 @@ int main()
   {
   case 1:
     PrintAll(heroes);
+    break;
+  case 2:
+    HeroWithMostItem(heroes);
     break;
   }
   getchar();
