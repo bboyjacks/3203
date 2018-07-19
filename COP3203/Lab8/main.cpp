@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -51,6 +52,11 @@ struct Hero
     m_inventories(std::move(_inventories))
   {
 
+  }
+
+  bool operator < (const Hero& _hero) const
+  {
+    return m_agility < _hero.m_agility;
   }
 };
 
@@ -207,6 +213,27 @@ void HeroWithGT18Intelligence(vector<Hero*> _heroes)
   }
 }
 
+void ClumsiestHero(vector<Hero*> _heroes)
+{
+  std::sort(_heroes.begin(), _heroes.end());
+
+  if (_heroes.size() > 2)
+  {
+    PrintHero(*_heroes[0]);
+    PrintHero(*_heroes[1]);
+  }
+  else
+  {
+    for (const Hero const* hero : _heroes)
+    {
+      PrintHero(*hero);
+    }
+  }
+}
+
+
+
+
 int main()
 {
   cout << "Which file(s) to open?\n";
@@ -243,6 +270,9 @@ int main()
     break;
   case 4:
     HeroWithGT18Intelligence(heroes);
+    break;
+  case 5:
+    ClumsiestHero(heroes);
     break;
   }
   getchar();
