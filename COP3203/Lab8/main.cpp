@@ -54,9 +54,14 @@ struct Hero
 
   }
 
-  bool operator < (const Hero& _hero) const
+  int GetTotalInventoryValue() const
   {
-    return m_agility < _hero.m_agility;
+    int total = 0;
+    for (const Inventory* inventory : m_inventories)
+    {
+      total += inventory->m_value;
+    }
+    return total;
   }
 };
 
@@ -67,16 +72,24 @@ void PrintHero(const Hero& _hero)
   cout << "Int: " << _hero.m_intelligence << endl;
   cout << "Agi: " << _hero.m_agility << endl;
   cout << "HP: " << _hero.m_cur_hit_points << " / " << _hero.m_max_hit_points << endl;
-  cout << "Armor: " << _hero.m_armor << endl;
-  cout << "Magic armor: " << _hero.m_magic_armor << endl;
-  cout << "Inventory:" << endl;
+  cout << "Armor: " << _hero.m_armor * 100 << "%" << endl;
+  cout << "Magic armor: " << _hero.m_magic_armor * 100 << "%" << endl;
+  cout << "Inventory: " << endl;
 
-  for (const Inventory const* inventory : _hero.m_inventories)
+  if (_hero.m_inventories.size() > 0)
   {
-    cout << "    ";
-    cout << inventory->m_name << ", ";
-    cout << inventory->m_value << ", ";
-    cout << inventory->m_weight << endl;
+    for (const Inventory* inventory : _hero.m_inventories)
+    {
+      cout << "   ";
+      cout << inventory->m_name << ", ";
+      cout << inventory->m_value << ", ";
+      cout << inventory->m_weight << endl;
+    }
+  }
+  else
+  {
+    cout << "   ";
+    cout << "Inventory empty." << endl;
   }
   cout << endl;
 }
@@ -157,7 +170,7 @@ void LoadHeroes(vector<Hero*>& _heroes, const string& _file)
 
 void PrintAll(vector<Hero*> _heroes)
 {
-  for (const Hero const* hero : _heroes)
+  for (const Hero* hero : _heroes)
   {
     PrintHero(*hero);
   }
@@ -165,9 +178,9 @@ void PrintAll(vector<Hero*> _heroes)
 
 void HeroWithMostItem(vector<Hero*> _heroes)
 {
-  int max_inventory_size = 0;
+  size_t max_inventory_size = 0;
   const Hero *hero_with_max_item = _heroes.front();
-  for (const Hero const* hero : _heroes)
+  for (const Hero* hero : _heroes)
   {
     if (max_inventory_size < hero->m_inventories.size())
     {
@@ -183,7 +196,7 @@ void StrongestHero(vector<Hero*> _heroes)
 {
   int max_strength = 0;
   const Hero *hero_with_max_strength = _heroes.front();
-  for (const Hero const* hero : _heroes)
+  for (const Hero* hero : _heroes)
   {
     if (max_strength < hero->m_strength)
     {
@@ -206,8 +219,7 @@ void HeroWithGT18Intelligence(vector<Hero*> _heroes)
     }
   }
 
-  cout << "Strong heroes: " << endl;
-  for (const Hero const* hero : selected_heroes)
+  for (const Hero* hero : selected_heroes)
   {
     PrintHero(*hero);
   }
@@ -215,23 +227,41 @@ void HeroWithGT18Intelligence(vector<Hero*> _heroes)
 
 void ClumsiestHero(vector<Hero*> _heroes)
 {
-  std::sort(_heroes.begin(), _heroes.end());
+  std::sort(_heroes.begin(), _heroes.end(), [](const Hero* lhs, const Hero* rhs) {
+    return lhs->m_agility < rhs->m_agility;
+  });
 
-  if (_heroes.size() > 2)
+  if (_heroes.size() >= 2)
   {
+    cout << "Clumsiest hero:" << endl;
     PrintHero(*_heroes[0]);
+    cout << "Second clumsiest hero: " << endl;
     PrintHero(*_heroes[1]);
   }
   else
   {
-    for (const Hero const* hero : _heroes)
+    for (const Hero* hero : _heroes)
     {
       PrintHero(*hero);
     }
   }
 }
 
+void HeroWithMostValueable(vector<Hero*>& _heroes)
+{
+  int max_total_inventory = 0;
+  const Hero* hero_with_max_invent_value = _heroes.front();
+  for (const Hero* hero : _heroes)
+  {
+    if (max_total_inventory < hero->GetTotalInventoryValue())
+    {
+      max_total_inventory = hero->GetTotalInventoryValue();
+      hero_with_max_invent_value = hero;
+    }
+  }
 
+  PrintHero(*hero_with_max_invent_value);
+}
 
 
 int main()
@@ -244,7 +274,20 @@ int main()
   cin >> option;
 
   vector<Hero*> heroes;
-  LoadHeroes(heroes, "heroes.dat");
+
+  if (option == 1)
+  {
+    LoadHeroes(heroes, "fantasyheroes.dat");
+  }
+  else if (option == 2)
+  {
+    LoadHeroes(heroes, "superheroes.dat");
+  }
+  else
+  {
+    LoadHeroes(heroes, "fantasyheroes.dat");
+    LoadHeroes(heroes, "superheroes.dat");
+  }
 
   cout << "1. Print all heroes" << endl;
   cout << "2. Hero with the most items" << endl;
@@ -254,7 +297,6 @@ int main()
   cout << "6. Hero with the most valuable stuff" << endl << endl;
 
   std::cin >> option;
-  cin.get();
 
   /* Work your magic here */
   switch (option)
@@ -274,7 +316,9 @@ int main()
   case 5:
     ClumsiestHero(heroes);
     break;
+  case 6:
+    HeroWithMostValueable(heroes);
+    break;
   }
-  getchar();
   return 0;
 }
