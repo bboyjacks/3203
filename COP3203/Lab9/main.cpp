@@ -50,6 +50,8 @@ int main()
 
   cout << word_info.GetTotalNumWords() << endl;
   cout << word_info.GetNumUniqueWords() << endl;
+  cout << word_info.GetLongestWord() << endl;
+  cout << word_info.GetAvgWordSize() << endl;
   // Read the words from the file
   // Show the stats
   // Show the most frequent words, NOT using the ignore list

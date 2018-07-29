@@ -13,6 +13,7 @@ public:
   unsigned GetTotalNumWords() const;
   unsigned GetNumUniqueWords() const;
   std::string GetLongestWord() const;
+  unsigned GetAvgWordSize() const;
   virtual ~WordInfo();
 private:
   std::map<std::string, std::string> m_words_to_ignore;
