@@ -1,10 +1,8 @@
 // Lexer.cpp : Defines the entry point for the console application.
 //
-#include <algorithm>
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <sstream>
 #include "WordInfo.h"
 #include <map>
 #include <unordered_map>
@@ -27,31 +25,15 @@ int main()
   cin >> option;
 
   // TODO: Create a WordList object and set the list of words to ignore
-  WordInfo word_info(words_to_ignore);
+  WordInfo word_info;
 
   vector<string> files = {"file1.txt", "file2.txt", "file3.txt", "file4.txt" };
   string file = files[option - 1];
 
-  ifstream infile2(file);
-  while (getline(infile2, line))
-  {
-    vector<char> striped_line;
-    for (char character : line)
-    {
-      const int char_int = int(character);
-      if ((65 <= char_int && char_int < 91) || (97 <= char_int && char_int < 123) || char_int == 32 || char_int == 45)
-        striped_line.push_back(char_int);
-    }
-
-    string line_str(striped_line.begin(), striped_line.end());
-    transform(line_str.begin(), line_str.end(), line_str.begin(), ::tolower);
-    word_info.AddWords(line_str);
-  }
-
-  cout << word_info.GetTotalNumWords() << endl;
-  cout << word_info.GetNumUniqueWords() << endl;
-  cout << word_info.GetLongestWord() << endl;
-  cout << word_info.GetAvgWordSize() << endl;
+  word_info.ReadWordsFromFile(file.c_str());
+  word_info.DisplayStats();
+  word_info.MostCommonWords(option + 1);
+  word_info.SetIgnoreWords(words_to_ignore);
   // Read the words from the file
   // Show the stats
   // Show the most frequent words, NOT using the ignore list
