@@ -13,7 +13,8 @@ public:
   void MostCommonWords(int _count, bool _ignore_common_file = false) const;
   void LongestWords(std::vector<std::string>& _words) const;
   void SetIgnoreWords(std::vector<std::string>& _ignore);
-  int SearchForWord(const char* _word) const;
+  int SearchForWord(const char* _word);
+  std::vector<std::string> SearchPartial(const char* _word);
   virtual ~WordInfo();
 private:
   unsigned GetTotalNumWords() const;

@@ -18,27 +18,10 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WordInfo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="WordInfo.h">
+    <ClInclude Include="main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="file1.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="file2.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="file3.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="file4.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
   </ItemGroup>
 </Project>
