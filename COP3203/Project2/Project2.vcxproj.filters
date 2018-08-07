@@ -13,5 +13,59 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{d30fb6b3-d634-4b64-b890-da72e2b8a8f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Output">
+      <UniqueIdentifier>{2785831b-17d8-4bac-b418-4d544f264ee2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="input\car.tga">
+      <Filter>Input</Filter>
+    </Image>
+    <Image Include="input\circles.tga">
+      <Filter>Input</Filter>
+    </Image>
+    <Image Include="input\layer_blue.tga">
+      <Filter>Input</Filter>
+    </Image>
+    <Image Include="input\layer_green.tga">
+      <Filter>Input</Filter>
+    </Image>
+    <Image Include="input\layer_red.tga">
+      <Filter>Input</Filter>
+    </Image>
+    <Image Include="input\layer1.tga">
+      <Filter>Input</Filter>
+    </Image>
+    <Image Include="input\layer2.tga">
+      <Filter>Input</Filter>
+    </Image>
+    <Image Include="input\pattern1.tga">
+      <Filter>Input</Filter>
+    </Image>
+    <Image Include="input\pattern2.tga">
+      <Filter>Input</Filter>
+    </Image>
+    <Image Include="input\text.tga">
+      <Filter>Input</Filter>
+    </Image>
+    <Image Include="input\text2.tga">
+      <Filter>Input</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
